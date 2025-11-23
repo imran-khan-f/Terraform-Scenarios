@@ -1,0 +1,65 @@
+✅ Scenario 1 — Map of instance types per environment
+
+You have dev, stage, prod environments.
+Each environment should use a different instance type from a map.
+
+Example (logic, not code):
+
+dev   → t3.micro
+stage → t3.small
+prod  → t3.large
+
+
+Resource must read instance type from the map.
+
+✅ Scenario 2 — Map of AMI IDs per region
+
+You want to deploy EC2 instances in different AWS regions using a map:
+
+Logic:
+
+us-east-1 → ami-1111
+us-west-2 → ami-2222
+ap-south-1 → ami-3333
+
+
+EC2 should automatically pick AMI based on the region input.
+
+✅ Scenario 3 — Map of tags applied to a resource
+
+You want to maintain all tags in a single map variable like:
+
+{
+  Environment = "dev"
+  Owner       = "Imran"
+  Project     = "Terraform-Learning"
+}
+
+
+Resource should use tags = var.common_tags.
+
+✅ Scenario 4 — Map for number of servers per environment
+
+Logic:
+
+dev   → 1 server  
+stage → 2 servers  
+prod  → 4 servers  
+
+
+Use a map and read count from it.
+
+✅ Scenario 5 — Map of S3 bucket configurations
+
+Store bucket properties inside a map:
+
+{
+  dev = {
+    versioning = false
+    acl = "private"
+  }
+  prod = {
+    versioning = true
+    acl = "private"
+  }
+}

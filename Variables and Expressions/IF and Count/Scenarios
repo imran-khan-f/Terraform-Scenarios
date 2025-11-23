@@ -1,0 +1,30 @@
+✅ Scenario 1 — Create EC2 only if environment is “prod”
+
+You have a variable environment.
+If prod → launch 2 EC2 instances
+If dev → launch 0 EC2 instances
+
+Requirement: Use an if condition to control count.
+
+✅ Scenario 2 — Choose instance type based on environment
+
+If environment = "prod" → use t3.large
+Else → use t3.micro
+
+Use an if expression inside a variable or resource.
+
+✅ Scenario 3 — Enable S3 versioning only in prod
+
+If prod → versioning = "Enabled"
+Else → versioning = "Suspended"
+
+✅ Scenario 4 — Add a tag only if is_enabled = true
+
+If is_enabled = true → add tag "Monitoring" = "Enabled"
+Else → no tag should be created.
+
+✅ Scenario 5 — Create IAM user only if create_user = true
+
+Variable: create_user.
+If true → create IAM user
+If false → skip the resource using count.

@@ -1,0 +1,88 @@
+Scenario 1 — Create multiple S3 buckets using a map
+
+Input map:
+
+{
+  bucket1 = "dev-project"
+  bucket2 = "prod-project"
+}
+
+
+Requirement:
+
+Use for_each
+
+Bucket name = each.value
+
+Tag "Name" = each.key
+
+✅ Scenario 2 — Create IAM users from a set of names
+
+Input set:
+
+["imran", "siva", "arun"]
+
+
+Requirement:
+
+Use for_each
+
+Username = each.value
+
+Home directory tag = each.key (index-like)
+
+✅ Scenario 3 — Create EC2 instances with different instance types
+
+Input map:
+
+{
+  web  = "t3.micro"
+  app  = "t3.small"
+  db   = "t3.medium"
+}
+
+
+Requirement:
+
+Create one EC2 per key
+
+Name tag = each.key (web/app/db)
+
+instance_type = each.value
+
+✅ Scenario 4 — Create SG rules from a list of objects
+
+Input list of objects:
+
+[
+  { port = 22,  description = "SSH" },
+  { port = 80,  description = "HTTP" },
+  { port = 443, description = "HTTPS" }
+]
+
+
+Requirement:
+
+Convert list to map using toset() or tomap()
+
+Use each.key as rule index
+
+Use each.value.port and each.value.description
+
+✅ Scenario 5 — Create multiple DynamoDB tables using a map of objects
+
+Input map:
+
+{
+  users = { read = 5, write = 5 }
+  orders = { read = 10, write = 10 }
+}
+
+
+Requirement:
+
+for_each
+
+Table name = each.key
+
+Read/write capacity = each.value.read, each.value.write

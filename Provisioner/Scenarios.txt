@@ -1,0 +1,96 @@
+Scenario 1: Run a Local Shell Script After Creating EC2
+Use case:
+You want Terraform to run a script on your local machine after EC2 is created.
+Provisioner type:
+local-exec
+
+Supporting App File (local script)
+Create a script scripts/notify.sh:
+#!/bin/bash
+echo "EC2 instance created successfully!" >> logs/provision.log
+
+Your Task (Terraform)
+Create an EC2 instance
+Use local-exec to run notify.sh
+Pass instance ID to the script as argument
+
+Scenario 2: Upload an App File to EC2 Using file Provisioner
+Use case:
+Upload a web page to the EC2 server.
+
+Supporting App File
+Create app/index.html:
+<html>
+  <body>
+    <h1>Hello from Terraform provisioner!</h1>
+  </body>
+</html>
+
+Your Task (Terraform)
+Create an EC2 instance
+Connect using SSH with remote-exec
+Upload app/index.html to /var/www/html/index.html
+Restart Apache
+
+Scenario 3: Install Nginx on EC2 Using remote-exec
+Use case:
+After EC2 boots, install and start Nginx.
+
+Supporting App File
+Create a shell script scripts/install_nginx.sh:
+#!/bin/bash
+sudo apt update -y
+sudo apt install nginx -y
+sudo systemctl enable nginx
+sudo systemctl start nginx
+
+Your Task (Terraform)
+Spin up EC2
+Use remote-exec to run the above script on EC2
+
+
+Scenario 4: Deploy a Python App Using file + remote-exec
+Use case:
+Upload and run a Python app on EC2.
+
+Supporting App File 1: Python program
+Create app/app.py:
+from http.server import SimpleHTTPRequestHandler, HTTPServer
+
+PORT = 8080
+
+class Handler(SimpleHTTPRequestHandler):
+    pass
+
+with HTTPServer(("", PORT), Handler) as httpd:
+    print(f"Server running on port {PORT}")
+    httpd.serve_forever()
+
+Supporting App File 2: Requirements
+Create app/requirements.txt:
+flask
+requests
+
+Your Task (Terraform)
+Upload both files using file provisioner
+Install python3 and pip using remote-exec
+Run the python server in background using nohup
+
+
+Scenario 5: Bootstrap a Server Using Cloud-Init (Provisioner Alternative)
+Use case:
+Provision a Linux EC2 instance that installs docker and starts a container.
+This does not use provisioners; uses user_data
+(better practice, but still good for comparison).
+
+Supporting App File
+Create scripts/docker_userdata.sh:
+#!/bin/bash
+apt update -y
+apt install docker.io -y
+systemctl start docker
+docker run -d -p 80:80 nginx
+
+Your Task (Terraform)
+Launch EC2 with the above script in user_data
+Compare it to provisioners
